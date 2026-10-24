@@ -35,6 +35,21 @@
         /* 強制將原生日期輸入框切換為 dd/mm/yyyy 視覺格式的輔助樣式 */
         .date-format-input { position: relative; }
         .date-format-input::-webkit-datetime-edit-fields-wrapper { html: zh; }
+
+        /* 手機優先：減少橫向滾動，讓輸入及按鈕更容易點按 */
+        @media (max-width: 767px) {
+          body { font-size: 15px; }
+          button, input, textarea, select { min-height: 42px; }
+          .mobile-sticky-header { position: sticky; top: 0; z-index: 20; margin-left: -1rem; margin-right: -1rem; padding: .75rem 1rem; background: rgba(248,250,252,.94); backdrop-filter: blur(10px); border-bottom: 1px solid #e2e8f0; }
+          .mobile-action-row { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .35rem; width: 100%; }
+          .mobile-action-row button { justify-content: center; min-height: 38px; padding: .35rem .2rem; font-size: 0; }
+          .mobile-action-row button svg { width: 1rem; height: 1rem; margin-right: 0 !important; }
+          .mobile-sticky-header h1 { font-size: 1.05rem; }
+          .mobile-summary-card { min-height: 0 !important; padding: 1rem !important; }
+          .mobile-summary-card .summary-description { min-height: 0 !important; }
+          .mobile-summary-card .summary-number { font-size: 2rem !important; }
+          .mobile-summary-card .summary-middle { padding-top: .7rem; padding-bottom: .7rem; }
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800">
@@ -47,7 +62,7 @@
         // --- 內建圖示組件 ---
         const IconCalculator = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="16" height="20" x="4" y="2" rx="2"/><line x1="8" x2="16" y1="6" y2="6"/><line x1="16" x2="16" y1="14" y2="18"/><path d="M16 10h.01"/><path d="M12 10h.01"/><path d="M8 10h.01"/><path d="M12 14h.01"/><path d="M8 14h.01"/><path d="M12 18h.01"/><path d="M8 18h.01"/></svg>;
         const IconCalendarDays = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>;
-        const IconClock = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>;
+        const IconSettings = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>;
         const IconPlus = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" x2="12" y1="5" y2="19"/><line x1="5" x2="19" y1="12" y2="12"/></svg>;
         const IconX = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" x2="6" y1="6" y2="18"/><line x1="6" x2="18" y1="6" y2="18"/></svg>;
         const IconCalendar = ({className}) => <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg>;
@@ -92,6 +107,19 @@
           { id: '2027_16', date: '2027-12-25', name: '聖誕節' },
           { id: '2027_17', date: '2027-12-27', name: '聖誕節後第一個周日假' }
         ];
+
+        // 1823（香港政府）官方繁體中文公眾假期 iCal。
+        const OFFICIAL_HOLIDAY_JSON_URL = 'https://www.1823.gov.hk/common/ical/tc.json';
+
+        const parseOfficialJson = (payload) => {
+          const events = payload?.vcalendar?.flatMap(calendar => calendar.vevent || []) || [];
+          return events.map((event, index) => {
+            const raw = Array.isArray(event.dtstart) ? event.dtstart[0] : event.dtstart;
+            if (!raw || !/^\d{8}$/.test(raw)) return null;
+            const date = `${raw.slice(0,4)}-${raw.slice(4,6)}-${raw.slice(6,8)}`;
+            return { id: `official_${date}_${index}`, date, name: event.summary || '公眾假期', source: 'official' };
+          }).filter(Boolean);
+        };
 
         // --- 輔助函式：轉換日期表達格式 YYYY-MM-DD <> DD/MM/YYYY ---
         const convertIsoToDdmmyyyy = (isoStr) => {
@@ -175,12 +203,16 @@
           const [isBulkModalOpen, setIsBulkModalOpen] = useState(false);
           const [isListEditModalOpen, setIsListEditModalOpen] = useState(false);
           const [isGuideOpen, setIsGuideOpen] = useState(false);
+          const [showConfigPanel, setShowConfigPanel] = useState(false);
+          const [showHolidayPanel, setShowHolidayPanel] = useState(false);
+          const [isQuickAddOpen, setIsQuickAddOpen] = useState(false);
+          const [showDataMenu, setShowDataMenu] = useState(false);
           const fileInputRef = useRef(null);
           
           const [bulkInputText, setBulkInputText] = useState('');
           const [listEditText, setListEditText] = useState('');
           
-          const todayDate = '2026-05-21';
+          const todayDate = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Hong_Kong' });
           const currentYearNum = useMemo(() => new Date(todayDate).getFullYear(), [todayDate]);
           const [bulkYear, setBulkYear] = useState(String(currentYearNum + 1)); 
 
@@ -192,6 +224,9 @@
           const [estimationDate, setEstimationDate] = useLocalStorage('lc_estDate', '2026-11-29');
 
           const [holidays, setHolidays] = useLocalStorage('lc_holidays_v4_pure_2027', INITIAL_SHOWCASE_HOLIDAYS);
+          const [holidayLastSynced, setHolidayLastSynced] = useLocalStorage('lc_holidayLastSynced_v1', '');
+          const [holidaySyncState, setHolidaySyncState] = useState('idle');
+          const [holidaySyncMessage, setHolidaySyncMessage] = useState('');
           const [showAddHoliday, setShowAddHoliday] = useState(false);
           const [newHolidayDate, setNewHolidayDate] = useState('');
           const [newHolidayName, setNewHolidayName] = useState('');
@@ -206,7 +241,8 @@
           const [specialEvents, setSpecialEvents] = useLocalStorage('lc_specialEvents_v2', [
             { id: 1, date: '2026-06-24', name: '全公司大會 (範例)', remarks: '全體員工必須出席，不可批假' }
           ]);
-          const [newEventDate, setNewEventDate] = useState('');
+          const [newEventStartDate, setNewEventStartDate] = useState('');
+          const [newEventEndDate, setNewEventEndDate] = useState('');
           const [newEventName, setNewEventName] = useState('');
           const [newEventRemarks, setNewEventRemarks] = useState('');
 
@@ -278,7 +314,12 @@
             const day = d.getDay();
             const isWeekend = day === 0 || day === 6; 
             const isHoliday = holidays.some(h => h.date === dateStr);
-            return !isWeekend && !isHoliday;
+            const isRestricted = specialEvents.some(e => {
+              const start = e.startDate || e.date;
+              const end = e.endDate || e.date || start;
+              return start && end && dateStr >= start && dateStr <= end;
+            });
+            return !isWeekend && !isHoliday && !isRestricted;
           };
 
           const calculateWorkDays = (start, end) => {
@@ -308,6 +349,35 @@
             return dates;
           };
 
+          const syncOfficialHolidays = async (silent = false) => {
+            if (!silent) setHolidaySyncState('loading');
+            try {
+              const officialUrl = `${OFFICIAL_HOLIDAY_JSON_URL}?v=${Date.now()}`;
+              const response = await fetch(officialUrl, { cache: 'no-store' });
+              if (!response.ok) throw new Error(`HTTP ${response.status}`);
+              const official = parseOfficialJson(await response.json());
+              if (!official.length) throw new Error('官方資料沒有有效假期');
+              const officialDates = new Set(official.map(h => h.date));
+              setHolidays(prev => {
+                const custom = prev.filter(h => h.source !== 'official' && !officialDates.has(h.date));
+                return [...custom, ...official].sort((a, b) => new Date(a.date) - new Date(b.date));
+              });
+              const syncedAt = new Date().toISOString();
+              setHolidayLastSynced(syncedAt);
+              setHolidaySyncState('success');
+              setHolidaySyncMessage(`已同步 ${official.length} 個官方假期`);
+            } catch (error) {
+              setHolidaySyncState('error');
+              setHolidaySyncMessage('官方資料暫時無法由此頁面讀取，已保留瀏覽器內上次儲存的假期');
+              console.warn('Official holiday sync failed', error);
+            }
+          };
+
+          useEffect(() => {
+            const last = holidayLastSynced ? new Date(holidayLastSynced).getTime() : 0;
+            if (!last || Date.now() - last > 24 * 60 * 60 * 1000) syncOfficialHolidays(true);
+          }, []);
+
           useEffect(() => {
             setActivities(prev => {
               let changed = false;
@@ -324,13 +394,24 @@
               });
               return changed ? updated : prev;
             });
-          }, [holidays]);
+          }, [holidays, specialEvents]);
 
           useEffect(() => {
             if (newActStartDate && newActEndDate) {
               setNewActDays(calculateWorkDays(newActStartDate, newActEndDate));
             }
           }, [newActStartDate, newActEndDate, holidays]);
+
+          const findEarliestBalanceDate = (requiredBalance) => {
+            const start = new Date(`${todayDate}T00:00:00`);
+            for (let i = 0; i <= 3660; i++) {
+              const cursor = new Date(start);
+              cursor.setDate(cursor.getDate() + i);
+              const dateStr = cursor.toISOString().split('T')[0];
+              if (getGrossLeaveOnDate(dateStr) >= requiredBalance) return dateStr;
+            }
+            return addCalendarDays(todayDate, 3660);
+          };
 
           const processedActivities = useMemo(() => {
             let accumulatedTaken = 0;
@@ -343,15 +424,17 @@
               const enough = balanceAtStart >= act.requestedDays;
               
               const actDates = getDatesInRange(act.startDate, act.endDate);
-              const overlappingEvents = specialEvents.filter(se => actDates.includes(se.date));
+              const overlappingEvents = specialEvents.filter(se => {
+                const eventDates = getDatesInRange(se.startDate || se.date, se.endDate || se.date || se.startDate);
+                return eventDates.some(d => actDates.includes(d));
+              });
 
               let targetDate = '-';
               let targetApplyDate = '-';
               
               if (!enough) {
                 const totalNeeded = accumulatedTaken + act.requestedDays;
-                const requiredCalendarDays = Math.ceil((totalNeeded - Number(initialBalance)) / currentDailyRate);
-                targetDate = addCalendarDays(settlementDate, Math.max(0, requiredCalendarDays));
+                targetDate = findEarliestBalanceDate(totalNeeded);
                 targetApplyDate = addCalendarDays(targetDate, -advanceNoticeDays);
               }
 
@@ -642,10 +725,42 @@
             );
           };
 
+          const handleQuickAddActivity = () => {
+            if (!newActName.trim() || !newActStartDate || !newActEndDate) return;
+            if (new Date(newActEndDate) < new Date(newActStartDate)) {
+              showConfirm('登記失敗', '結束日期不可早於開始日期。', () => {}, 'alert');
+              return;
+            }
+            const autoDays = calculateWorkDays(newActStartDate, newActEndDate);
+            const requestedDays = newActDays === '' ? autoDays : Number(newActDays);
+            setActivities(prev => [...prev, { id: Date.now(), name: newActName.trim(), startDate: newActStartDate, endDate: newActEndDate, requestedDays, isApproved: false, isManual: requestedDays !== autoDays }]);
+            setNewActName(''); setNewActStartDate(''); setNewActEndDate(''); setNewActDays('');
+            setIsQuickAddOpen(false);
+          };
+
           return (
             <div className="min-h-screen p-4 md:p-8">
               {/* --- 隱藏式檔案匯入監聽點 --- */}
               <input type="file" ref={fileInputRef} accept=".json" onChange={handleImportData} className="hidden" />
+
+              <button onClick={() => setIsQuickAddOpen(true)} className="fixed bottom-5 right-5 z-40 flex h-14 w-14 items-center justify-center rounded-full bg-indigo-600 text-white shadow-xl shadow-indigo-600/30 transition-transform hover:scale-105 active:scale-95" title="快速登記放假" aria-label="快速登記放假">
+                <IconPlus className="h-6 w-6" />
+              </button>
+
+              {isQuickAddOpen && (
+                <div className="fixed inset-0 z-50 flex items-end justify-center p-3 sm:items-center">
+                  <div className="absolute inset-0 bg-slate-900/40 backdrop-blur-[2px]" onClick={() => setIsQuickAddOpen(false)}></div>
+                  <div className="relative w-full max-w-md rounded-3xl bg-white p-5 shadow-2xl animate-zoom-in">
+                    <div className="mb-4 flex items-center justify-between"><div><h3 className="text-lg font-black text-slate-900">快速登記放假</h3><p className="mt-1 text-xs text-slate-500">輸入日期後，系統會自動扣除週末及公眾假期。</p></div><button onClick={() => setIsQuickAddOpen(false)} className="rounded-full p-2 text-slate-400 hover:bg-slate-100"><IconX className="h-5 w-5" /></button></div>
+                    <div className="space-y-3">
+                      <input value={newActName} onChange={e => setNewActName(e.target.value)} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="假期名稱，例如：旅行" autoFocus />
+                      <div className="grid grid-cols-2 gap-2"><DdmmyyyyInput value={newActStartDate} onChange={setNewActStartDate} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" /><DdmmyyyyInput value={newActEndDate} onChange={setNewActEndDate} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" /></div>
+                      <input type="number" step="0.5" value={newActDays} onChange={e => setNewActDays(e.target.value)} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="請假日數（留空即自動計算）" />
+                      <button onClick={handleQuickAddActivity} className="w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white shadow-md hover:bg-indigo-700">加入年假計畫</button>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {/* --- 輔助確認/提示彈出視窗 --- */}
               {modalConfig.isOpen && (
@@ -783,35 +898,32 @@
 
               {/* --- 主畫面佈局 --- */}
               <div className="max-w-[1400px] mx-auto space-y-6">
-                <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
-                  <div className="flex items-center space-x-3">
-                    <IconCalculator className="w-8 h-8 text-indigo-600" />
-                    <h1 className="text-2xl font-bold text-slate-900">年假計算與預測系統</h1>
+                <header className="mobile-sticky-header flex items-center justify-between mb-5 gap-3">
+                  <div className="flex min-w-0 items-center space-x-2">
+                    <IconCalculator className="h-6 w-6 shrink-0 text-indigo-600" />
+                    <h1 className="truncate text-xl font-bold text-slate-900">年假計算與預測系統</h1>
                   </div>
-                  
-                  {/* 功能面板擴充：整合匯出/匯入資料鏈接 */}
-                  <div className="flex items-center flex-wrap gap-2 md:gap-3">
-                    <button onClick={handleExportData} className="text-xs md:text-sm font-bold bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full flex items-center shadow-sm hover:bg-slate-100 transition-colors">
-                      <IconDownload className="w-3.5 h-3.5 mr-1.5 text-indigo-600" /> 匯出系統資料
-                    </button>
-                    <button onClick={() => fileInputRef.current && fileInputRef.current.click()} className="text-xs md:text-sm font-bold bg-white border border-slate-200 text-slate-700 px-3 py-1.5 rounded-full flex items-center shadow-sm hover:bg-slate-100 transition-colors">
-                      <IconUpload className="w-3.5 h-3.5 mr-1.5 text-emerald-600" /> 匯入備份檔案
-                    </button>
-                    <button onClick={() => setIsGuideOpen(true)} className="text-xs md:text-sm font-bold bg-indigo-50 border border-indigo-100 text-indigo-700 px-3 py-1.5 rounded-full flex items-center shadow-sm hover:bg-indigo-100 transition-all">
-                      <IconHelp className="w-3.5 h-3.5 mr-1.5" /> 💡 說明
-                    </button>
-                    <button onClick={handleResetToBlank} className="text-xs md:text-sm font-bold bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-full flex items-center shadow-sm hover:bg-red-50 hover:text-red-600 transition-colors">
-                      <IconRotateCcw className="w-3.5 h-3.5 mr-1.5" /> 重設
-                    </button>
+                  <div className="flex shrink-0 items-center gap-1.5">
+                    <button title={showConfigPanel ? '收起系統設定' : '開啟系統設定'} aria-label={showConfigPanel ? '收起系統設定' : '開啟系統設定'} onClick={() => setShowConfigPanel(v => !v)} className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${showConfigPanel ? 'border-indigo-200 bg-indigo-50 text-indigo-700' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}`}><IconSettings className="h-4 w-4 text-violet-600" /></button>
+                    <button title={showHolidayPanel ? '收起公眾假期' : '開啟公眾假期'} aria-label={showHolidayPanel ? '收起公眾假期' : '開啟公眾假期'} onClick={() => setShowHolidayPanel(v => !v)} className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${showHolidayPanel ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'}`}><IconCalendarDays className="h-4 w-4" /></button>
+                    <div className="relative">
+                      <button title="匯出或匯入資料" aria-label="匯出或匯入資料" onClick={() => setShowDataMenu(v => !v)} className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-sm hover:bg-slate-50"><IconSave className="h-4 w-4" /></button>
+                      {showDataMenu && <div className="absolute right-0 top-11 z-30 w-44 rounded-xl border border-slate-200 bg-white p-1.5 shadow-xl">
+                        <button onClick={() => { handleExportData(); setShowDataMenu(false); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-xs font-bold text-slate-700 hover:bg-indigo-50"><IconDownload className="h-4 w-4 text-indigo-600" /> 匯出系統資料</button>
+                        <button onClick={() => { fileInputRef.current && fileInputRef.current.click(); setShowDataMenu(false); }} className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-xs font-bold text-slate-700 hover:bg-emerald-50"><IconUpload className="h-4 w-4 text-emerald-600" /> 匯入備份檔案</button>
+                      </div>}
+                    </div>
+                    <button title="說明" aria-label="說明" onClick={() => setIsGuideOpen(true)} className="flex h-9 w-9 items-center justify-center rounded-lg border border-indigo-100 bg-indigo-50 text-indigo-700 shadow-sm hover:bg-indigo-100"><IconHelp className="h-4 w-4" /></button>
+                    <button title="重設" aria-label="重設" onClick={handleResetToBlank} className="flex h-9 w-9 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-600 shadow-sm hover:bg-red-50 hover:text-red-600"><IconRotateCcw className="h-4 w-4" /></button>
                   </div>
                 </header>
 
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-                  {/* 左側設定與假期區 */}
-                  <div className="lg:col-span-3 space-y-6">
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
+                  {/* 左側設定與假期區：按需顯示 */}
+                  {(showConfigPanel || showHolidayPanel) && <div className="lg:col-span-3 space-y-6">
+                    {showConfigPanel && <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
                       <h2 className="text-sm font-bold mb-4 flex items-center text-slate-700 uppercase tracking-wider">
-                        <IconClock className="w-4 h-4 mr-2" /> 系統設定
+                        <IconSettings className="w-4 h-4 mr-2 text-violet-600" /> 系統設定
                       </h2>
                       <div className="space-y-4">
                         <div>
@@ -839,16 +951,19 @@
                           </div>
                         </div>
                       </div>
-                    </div>
+                    </div>}
 
                     {/* 公眾假期卡片區 */}
-                    <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col">
+                    {showHolidayPanel && <div className="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex flex-col">
                       <div className="flex justify-between items-center mb-4 shrink-0">
                         <h2 className="text-sm font-bold flex items-center text-slate-700 uppercase tracking-wider">
                           <IconCalendarDays className="w-4 h-4 mr-2" /> 公眾假期
                         </h2>
                         
                         <div className="flex gap-1.5 items-center">
+                          <button onClick={() => syncOfficialHolidays(false)} className="text-[10px] text-white bg-emerald-600 border border-emerald-600 font-bold px-2 py-1 rounded hover:bg-emerald-700 transition-colors">
+                            {holidaySyncState === 'loading' ? '同步中…' : '同步官方'}
+                          </button>
                           <button onClick={openListEditModal} className="text-[10px] text-indigo-600 bg-indigo-50 border border-indigo-100 font-bold px-2 py-1 rounded hover:bg-indigo-100 transition-colors">
                             編輯
                           </button>
@@ -858,6 +973,12 @@
                         </div>
                       </div>
                       
+                      <div className="mb-3 rounded-lg bg-slate-50 border border-slate-100 px-3 py-2 text-[10px] leading-relaxed text-slate-500">
+                        <div className="flex items-center justify-between gap-2">
+                          <span>{holidaySyncMessage || '每 24 小時自動檢查香港政府官方假期'}</span>
+                          {holidayLastSynced && <span className="whitespace-nowrap">上次：{new Date(holidayLastSynced).toLocaleDateString('zh-HK')}</span>}
+                        </div>
+                      </div>
                       <div className="space-y-2 flex-1 max-h-[380px] overflow-y-auto pr-1 custom-scrollbar">
                         {visibleHolidays.length === 0 ? (
                            <div className="flex flex-col items-center gap-3 text-center text-slate-400 text-sm py-6 border-2 border-dashed border-slate-100 rounded-lg">
@@ -899,17 +1020,17 @@
                           <IconPlus className="w-3.5 h-3.5 mr-1" /> 新增自訂紅日
                         </button>
                       )}
-                    </div>
-                  </div>
+                    </div>}
+                  </div>}
 
                   {/* 右側主要內容區 */}
-                  <div className="lg:col-span-9 space-y-6">
+                  <div className={showConfigPanel || showHolidayPanel ? "lg:col-span-9 space-y-6" : "lg:col-span-12 space-y-6"}>
                     
                     {/* 頂部數據摘要卡片 (已徹底優化 Flex-Col 與 Min-Height，完美解決遮擋與文字重疊問題) */}
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                       
                       {/* 1. 今日實際可用結餘 */}
-                      <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col min-h-[250px] relative overflow-hidden transition-all hover:shadow-md">
+                      <div className="mobile-summary-card bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex flex-col min-h-[250px] relative overflow-hidden transition-all hover:shadow-md">
                         {/* 頂部標題及動態描述 (彈性自適應，移除固定高度避免阻擋) */}
                         <div className="space-y-1.5 shrink-0">
                           <div className="flex items-center justify-between h-6">
@@ -919,15 +1040,15 @@
                               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                             </span>
                           </div>
-                          <p className="text-xs text-slate-500 leading-relaxed min-h-[2.5rem]">
-                            截至今日基準日為止，您按比例實際已賺取並可即時動用的淨年假。
+                          <p className="summary-description text-xs text-slate-500 leading-relaxed min-h-[2.5rem]">
+                            截至今天，按結算日規則已累積的年假，扣除已完結及已批准假期後，這就是你現在可以申請的餘額。
                           </p>
                         </div>
                         
                         {/* 中間數據區間 (獨立 flex-1 py-4 居中，保障安全留白，不與上下疊加) */}
-                        <div className="py-4 flex-1 flex flex-col justify-center">
+                        <div className="summary-middle py-4 flex-1 flex flex-col justify-center">
                           <div className="flex items-baseline">
-                            <span className="text-4xl md:text-5xl font-black text-slate-900 font-mono tracking-tight">
+                            <span className="summary-number text-4xl md:text-5xl font-black text-slate-900 font-mono tracking-tight">
                               {displayUsableBalance.toFixed(2)}
                             </span>
                             <span className="text-sm font-bold text-slate-400 ml-1.5">日</span>
@@ -960,7 +1081,7 @@
                       </div>
                       
                       {/* 2. 預計最終結餘 */}
-                      <div className={`p-6 rounded-2xl border shadow-sm flex flex-col min-h-[250px] transition-all hover:shadow-md ${finalProjectedBalance < 0 ? 'bg-rose-50/70 border-rose-200 text-rose-900' : 'bg-indigo-50/70 border-indigo-200 text-indigo-900'}`}>
+                      <div className={`mobile-summary-card p-6 rounded-2xl border shadow-sm flex flex-col min-h-[250px] transition-all hover:shadow-md ${finalProjectedBalance < 0 ? 'bg-rose-50/70 border-rose-200 text-rose-900' : 'bg-indigo-50/70 border-indigo-200 text-indigo-900'}`}>
                         {/* 頂部標題及動態描述 */}
                         <div className="space-y-1.5 shrink-0">
                           <div className="flex items-center justify-between h-6">
@@ -971,15 +1092,15 @@
                               <IconCheckCircle2 className="w-5 h-5 text-indigo-600" />
                             )}
                           </div>
-                          <p className="text-xs leading-relaxed min-h-[2.5rem] opacity-90">
-                            扣除未來所有規劃計畫（包含已批准及待審批）後的預計最終結餘。
+                          <p className="summary-description text-xs leading-relaxed min-h-[2.5rem] opacity-90">
+                            把目前及所有已登記計畫，包括已批准和待審批假期一併扣除後，預計最後剩餘的年假。
                           </p>
                         </div>
                         
                         {/* 中間數據區間 */}
-                        <div className="py-4 flex-1 flex flex-col justify-center">
+                        <div className="summary-middle py-4 flex-1 flex flex-col justify-center">
                           <div className="flex items-baseline">
-                            <span className={`text-4xl md:text-5xl font-black font-mono tracking-tight ${finalProjectedBalance < 0 ? 'text-rose-700' : 'text-indigo-900'}`}>
+                            <span className={`summary-number text-4xl md:text-5xl font-black font-mono tracking-tight ${finalProjectedBalance < 0 ? 'text-rose-700' : 'text-indigo-900'}`}>
                               {finalProjectedBalance.toFixed(2)}
                             </span>
                             <span className="text-sm font-bold ml-1.5 opacity-60">日</span>
@@ -994,7 +1115,7 @@
                       </div>
                       
                       {/* 3. 特定日期預測結餘 */}
-                      <div className={`rounded-2xl shadow-sm border p-6 flex flex-col min-h-[250px] transition-all hover:shadow-md ${estNet < 0 ? 'bg-rose-50/70 border-rose-200 text-rose-955' : 'bg-amber-50/60 border-amber-200 text-amber-955'}`}>
+                      <div className={`mobile-summary-card rounded-2xl shadow-sm border p-6 flex flex-col min-h-[250px] transition-all hover:shadow-md ${estNet < 0 ? 'bg-rose-50/70 border-rose-200 text-rose-955' : 'bg-amber-50/60 border-amber-200 text-amber-955'}`}>
                         {/* 頂部標題及動態描述 */}
                         <div className="space-y-1.5 shrink-0">
                           <div className="flex justify-between items-center h-6">
@@ -1005,15 +1126,15 @@
                               <IconTrendingUp className="w-5 h-5 text-amber-700" />
                             )}
                           </div>
-                          <p className="text-xs leading-relaxed min-h-[2.5rem] opacity-90">
-                            自結算日起按比例增長至指定日期並扣除相應規劃後的結餘預測。
+                          <p className="summary-description text-xs leading-relaxed min-h-[2.5rem] opacity-90">
+                            計算至你選定日期，加入截至該日累積的年假，再扣除該日期前已登記的放假計畫後，預計剩餘的年假。
                           </p>
                         </div>
                         
                         {/* 中間數據區間 */}
-                        <div className="py-4 flex-1 flex flex-col justify-center">
+                        <div className="summary-middle py-4 flex-1 flex flex-col justify-center">
                           <div className="flex items-baseline">
-                            <span className={`text-4xl md:text-5xl font-black font-mono tracking-tight ${estNet < 0 ? 'text-rose-600' : 'text-amber-700'}`}>
+                            <span className={`summary-number text-4xl md:text-5xl font-black font-mono tracking-tight ${estNet < 0 ? 'text-rose-600' : 'text-amber-700'}`}>
                               {estNet.toFixed(2)}
                             </span>
                             <span className="text-sm font-bold ml-1.5 opacity-70">日</span>
@@ -1038,9 +1159,10 @@
                     {/* 活動規劃表 */}
                     <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden flex flex-col">
                       <div className="p-5 border-b border-slate-100 bg-slate-50/80 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
-                        <h3 className="font-bold text-slate-800 text-lg">
-                          預定活動規劃
-                        </h3>
+                        <div>
+                          <h3 className="font-bold text-slate-800 text-lg">預定活動規劃</h3>
+                          <p className="mt-1 text-xs leading-relaxed text-slate-500">先登記未來假期，系統會檢查可用日數、不可放假日衝突，並提供最遲申請日或建議延期日期。</p>
+                        </div>
                         {activeActivities.length > 0 && (
                           <button onClick={() => showConfirm('清空目前計畫', '確定要清空所有目前的預定計畫嗎？', () => setActivities(historyActivities))} className="text-xs text-orange-600 hover:text-white font-bold px-3 py-1.5 bg-orange-50 hover:bg-orange-600 rounded-full border border-orange-200 transition-all">
                             清空規劃表
@@ -1048,7 +1170,7 @@
                         )}
                       </div>
                       
-                      <div className="overflow-x-auto custom-scrollbar">
+                      <div className="hidden md:block overflow-x-auto custom-scrollbar">
                         <table className="w-full text-sm text-left">
                           <thead className="bg-slate-50/50 text-slate-500 border-b border-slate-200">
                             <tr>
@@ -1182,7 +1304,7 @@
                                         </div>
                                         {act.overlappingEvents.map(e => (
                                           <div key={e.id} className="ml-4 opacity-95 text-orange-900 leading-relaxed">
-                                            • 於 <span className="font-mono bg-orange-100 px-1.5 py-0.5 rounded font-extrabold text-orange-955 border border-orange-200">{convertIsoToDdmmyyyy(e.date)}</span>：
+                                            • 於 <span className="font-mono bg-orange-100 px-1.5 py-0.5 rounded font-extrabold text-orange-955 border border-orange-200">{convertIsoToDdmmyyyy(e.startDate || e.date)}{(e.endDate || e.date) !== (e.startDate || e.date) ? ` 至 ${convertIsoToDdmmyyyy(e.endDate)}` : ''}</span>：
                                             <span className="font-bold text-orange-955">{e.name}</span>
                                             {e.remarks && <span className="text-[11px] text-orange-800 block ml-3 mt-0.5 italic">({e.remarks})</span>}
                                           </div>
@@ -1221,6 +1343,34 @@
                         </table>
                       </div>
                       
+                      <div className="md:hidden p-3 space-y-3 bg-slate-50/60">
+                        {activeActivities.length === 0 ? (
+                          <div className="p-6 text-center text-sm text-slate-400">目前沒有正在規劃中的未來活動</div>
+                        ) : activeActivities.map(act => (
+                          <div key={`mobile-${act.id}`} className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm space-y-3">
+                            {act.id === editingActivityId ? (
+                              <div className="space-y-2">
+                                <input value={editForm.name} onChange={e => handleEditActivityChange('name', e.target.value)} className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold outline-none" placeholder="計畫名稱" />
+                                <div className="grid grid-cols-2 gap-2">
+                                  <DdmmyyyyInput value={editForm.startDate} onChange={v => handleEditActivityChange('startDate', v)} className="w-full p-2 border border-slate-300 rounded-lg text-xs outline-none" />
+                                  <DdmmyyyyInput value={editForm.endDate} onChange={v => handleEditActivityChange('endDate', v)} className="w-full p-2 border border-slate-300 rounded-lg text-xs outline-none" />
+                                </div>
+                                <input type="number" step="0.5" value={editForm.requestedDays} onChange={e => handleEditActivityChange('requestedDays', e.target.value)} className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold outline-none" />
+                                <div className="flex gap-2"><button onClick={() => handleSaveActivityEdit(act.id)} className="flex-1 rounded-lg bg-emerald-600 text-white font-bold py-2">儲存</button><button onClick={() => setEditingActivityId(null)} className="flex-1 rounded-lg bg-slate-100 text-slate-600 font-bold py-2">取消</button></div>
+                              </div>
+                            ) : (
+                              <>
+                                <div className="flex items-start justify-between gap-3"><div><div className="font-bold text-slate-800">{act.name}</div><div className="text-xs text-slate-500 mt-1">{convertIsoToDdmmyyyy(act.startDate)} 至 {convertIsoToDdmmyyyy(act.endDate)}</div></div><span className={`shrink-0 rounded-lg px-2 py-1 text-xs font-bold ${act.enough ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}`}>{act.enough ? '足夠' : '不足'}</span></div>
+                                <div className="grid grid-cols-2 gap-2 text-xs"><div className="rounded-lg bg-slate-50 p-2"><span className="text-slate-400">請假工作日</span><div className="font-bold text-slate-700 mt-1">{act.requestedDays} 日</div></div><div className="rounded-lg bg-slate-50 p-2"><span className="text-slate-400">屆時結餘</span><div className="font-bold text-indigo-700 mt-1">{act.balanceAtStart.toFixed(2)} 日</div></div></div>
+                                {act.overlappingEvents?.length > 0 && <div className="rounded-xl border border-orange-200 bg-orange-50 p-3 text-xs text-orange-900"><div className="font-bold text-orange-800"><IconFlag className="mr-1 inline h-3.5 w-3.5" />日期衝突：不可放假日</div>{act.overlappingEvents.map(e => <div key={e.id} className="mt-1">{convertIsoToDdmmyyyy(e.startDate || e.date)}{(e.endDate || e.date) !== (e.startDate || e.date) ? ` 至 ${convertIsoToDdmmyyyy(e.endDate)}` : ''}：{e.name}</div>)}<div className="mt-2 font-bold">請調整活動日期，或避開以上日期後重新計算。</div></div>}
+                                {!act.enough && <div className="rounded-xl border border-red-200 bg-red-50 p-3 text-xs text-red-800"><div className="font-bold">年假暫時不足</div><div className="mt-1">預計於 {convertIsoToDdmmyyyy(act.targetDate)} 才累積足夠；如要安排此活動，建議最遲於 {convertIsoToDdmmyyyy(act.targetApplyDate)} 提交申請。</div></div>}
+                                <div className="flex gap-2"><button onClick={() => handleToggleApprove(act)} className={`flex-1 rounded-lg border py-2 text-xs font-bold ${act.isApproved ? 'border-emerald-200 bg-emerald-50 text-emerald-700' : 'border-slate-200 bg-white text-slate-600'}`}>{act.isApproved ? '✓ 已批准' : '待申請'}</button><button onClick={() => handleStartEditActivity(act)} className="rounded-lg border border-indigo-200 bg-indigo-50 px-3 py-2 text-xs font-bold text-indigo-700">編輯</button><button onClick={() => showConfirm('刪除活動', `確定要刪除「${act.name}」嗎？`, () => setActivities(activities.filter(a => a.id !== act.id)))} className="rounded-lg border border-red-100 bg-red-50 px-3 py-2 text-xs font-bold text-red-600">刪除</button></div>
+                              </>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+
                       {/* 新增活動區 */}
                       <div className="p-5 bg-slate-50/80 border-t border-slate-200">
                         <div className="flex flex-wrap gap-4 items-end">
@@ -1228,15 +1378,15 @@
                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">新增計畫名稱</label>
                             <input value={newActName} onChange={e => setNewActName(e.target.value)} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm" placeholder="例如：特別事務放假" />
                           </div>
-                          <div className="w-[140px]">
+                          <div className="w-full sm:w-[140px]">
                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">開始日期</label>
                             <DdmmyyyyInput value={newActStartDate} onChange={setNewActStartDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm" />
                           </div>
-                          <div className="w-[140px]">
+                          <div className="w-full sm:w-[140px]">
                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">結束日期</label>
                             <DdmmyyyyInput value={newActEndDate} onChange={setNewActEndDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm" />
                           </div>
-                          <div className="w-[110px]">
+                          <div className="w-full sm:w-[110px]">
                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">請假日數</label>
                             <input type="number" step="0.5" value={newActDays} onChange={e => setNewActDays(e.target.value)} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 text-center font-bold text-indigo-700 bg-indigo-50 shadow-sm" placeholder="自動" />
                           </div>
@@ -1297,17 +1447,17 @@
                                   <tr key={act.id} className="hover:bg-slate-50 transition-colors group">
                                     <td className="p-3 font-bold text-slate-700">{act.name}</td>
                                     <td className="p-3 text-slate-500 text-xs">
-                                      <div className="flex items-center">
-                                        <IconCalendarDays className="w-3.5 h-3.5 mr-1.5 opacity-70" />
-                                        {convertIsoToDdmmyyyy(act.startDate)} <span className="opacity-50 mx-1">至</span> {convertIsoToDdmmyyyy(act.endDate)}
+                                      <div className="history-date-range flex items-start gap-1.5 leading-relaxed">
+                                        <IconCalendarDays className="mt-0.5 h-3.5 w-3.5 shrink-0 opacity-70" />
+                                        <div><div>開始：{convertIsoToDdmmyyyy(act.startDate)}</div><div>結束：{convertIsoToDdmmyyyy(act.endDate)}</div></div>
                                       </div>
                                     </td>
                                     <td className="p-3 text-center">
-                                      <span className="font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">{act.requestedDays} 日</span>
+                                      <span className="inline-flex whitespace-nowrap font-bold text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 shadow-sm">{act.requestedDays} 日</span>
                                     </td>
                                     <td className="p-3">
-                                       <span className="inline-flex items-center text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md text-xs font-bold border border-slate-200">
-                                          <IconCheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-500" /> 已完結自動追溯
+                                       <span className="inline-flex items-center whitespace-nowrap text-slate-600 bg-slate-100 px-2.5 py-1 rounded-md text-xs font-bold border border-slate-200">
+                                          <IconCheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-500" /> 已完結
                                        </span>
                                     </td>
                                     <td className="p-3 text-right">
@@ -1338,11 +1488,15 @@
                       </div>
                       <div className="p-5">
                         <div className="flex flex-wrap gap-4 items-end mb-6">
-                            <div className="w-[140px]">
-                              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">日期</label>
-                              <DdmmyyyyInput value={newEventDate} onChange={setNewEventDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" />
+                            <div className="w-full sm:w-[140px]">
+                              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">開始日期</label>
+                              <DdmmyyyyInput value={newEventStartDate} onChange={setNewEventStartDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" />
                             </div>
-                            <div className="w-[180px]">
+                            <div className="w-full sm:w-[140px]">
+                              <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">結束日期</label>
+                              <DdmmyyyyInput value={newEventEndDate} onChange={setNewEventEndDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" />
+                            </div>
+                            <div className="w-full sm:w-[180px]">
                               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">事件名稱</label>
                               <input value={newEventName} onChange={e => setNewEventName(e.target.value)} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" placeholder="例如：重大Deadline" />
                             </div>
@@ -1352,9 +1506,22 @@
                             </div>
                             <button 
                               onClick={() => {
-                                if (newEventDate && newEventName && !specialEvents.some(e => e.date === newEventDate)) {
-                                  setSpecialEvents([...specialEvents, { id: Date.now(), date: newEventDate, name: newEventName, remarks: newEventRemarks }].sort((a, b) => new Date(a.date) - new Date(b.date)));
-                                  setNewEventDate(''); setNewEventName(''); setNewEventRemarks('');
+                                if (newEventStartDate && newEventEndDate && newEventName) {
+                                  if (newEventEndDate < newEventStartDate) {
+                                    showConfirm('新增失敗', '結束日期不可早於開始日期。', () => {}, 'alert');
+                                    return;
+                                  }
+                                  const eventDates = getDatesInRange(newEventStartDate, newEventEndDate);
+                                  const hasDuplicate = specialEvents.some(e => eventDates.some(d => {
+                                    const es = e.startDate || e.date; const ee = e.endDate || e.date || es;
+                                    return d >= es && d <= ee;
+                                  }));
+                                  if (hasDuplicate) {
+                                    showConfirm('新增失敗', '所選日期範圍與現有特別事件日重疊。', () => {}, 'alert');
+                                    return;
+                                  }
+                                  setSpecialEvents([...specialEvents, { id: Date.now(), date: newEventStartDate, startDate: newEventStartDate, endDate: newEventEndDate, name: newEventName, remarks: newEventRemarks }].sort((a, b) => new Date(a.startDate || a.date) - new Date(b.startDate || b.date)));
+                                  setNewEventStartDate(''); setNewEventEndDate(''); setNewEventName(''); setNewEventRemarks('');
                                 }
                               }}
                               className="bg-orange-500 text-white px-5 py-2.5 rounded-xl hover:bg-orange-600 font-bold text-sm transition-colors shadow-sm flex items-center h-[46px]"
@@ -1379,7 +1546,7 @@
                               ) : (
                                 specialEvents.map(ev => (
                                   <tr key={ev.id} className="hover:bg-orange-50/30 transition-colors">
-                                    <td className="p-3 font-bold text-orange-600 whitespace-nowrap">{convertIsoToDdmmyyyy(ev.date)}</td>
+                                    <td className="p-3 font-bold text-orange-600 whitespace-nowrap"><div>開始：{convertIsoToDdmmyyyy(ev.startDate || ev.date)}</div><div>結束：{convertIsoToDdmmyyyy(ev.endDate || ev.date)}</div></td>
                                     <td className="p-3 font-medium text-slate-800">{ev.name}</td>
                                     <td className="p-3 text-slate-500">{ev.remarks || <span className="text-slate-300 italic">無備註</span>}</td>
                                     <td className="p-3 text-right">
