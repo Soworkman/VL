@@ -137,7 +137,7 @@
         };
 
         // --- 精緻客製化特定格式日期輸入組件 (dd/mm/yyyy) ---
-        const DdmmyyyyInput = ({ value, onChange, className }) => {
+        const DdmmyyyyInput = ({ value, onChange, className, min, max }) => {
           const displayVal = useMemo(() => convertIsoToDdmmyyyy(value), [value]);
           const hiddenInputRef = useRef(null);
 
@@ -150,7 +150,7 @@
             
             if (val.length === 10) {
               const iso = convertDdmmyyyyToIso(val);
-              if (!isNaN(new Date(iso).getTime())) {
+              if (!isNaN(new Date(iso).getTime()) && (!min || iso >= min) && (!max || iso <= max)) {
                 onChange(iso);
                 return;
               }
@@ -170,7 +170,9 @@
               <input 
                 type="date" 
                 ref={hiddenInputRef}
-                value={value}
+                value={value || min || ''}
+                min={min}
+                max={max}
                 onChange={(e) => onChange(e.target.value)}
                 className="absolute right-2 opacity-0 w-6 h-6 cursor-pointer z-10" 
               />
@@ -754,7 +756,7 @@
                     <div className="mb-4 flex items-center justify-between"><div><h3 className="text-lg font-black text-slate-900">快速登記放假</h3><p className="mt-1 text-xs text-slate-500">輸入日期後，系統會自動扣除週末及公眾假期。</p></div><button onClick={() => setIsQuickAddOpen(false)} className="rounded-full p-2 text-slate-400 hover:bg-slate-100"><IconX className="h-5 w-5" /></button></div>
                     <div className="space-y-3">
                       <input value={newActName} onChange={e => setNewActName(e.target.value)} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="假期名稱，例如：旅行" autoFocus />
-                      <div className="grid grid-cols-2 gap-2"><DdmmyyyyInput value={newActStartDate} onChange={setNewActStartDate} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" /><DdmmyyyyInput value={newActEndDate} onChange={setNewActEndDate} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" /></div>
+                      <div className="grid grid-cols-2 gap-2"><DdmmyyyyInput value={newActStartDate} max={newActEndDate || undefined} onChange={setNewActStartDate} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" /><DdmmyyyyInput value={newActEndDate} min={newActStartDate || undefined} onChange={setNewActEndDate} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" /></div>
                       <input type="number" step="0.5" value={newActDays} onChange={e => setNewActDays(e.target.value)} className="w-full rounded-xl border border-slate-300 p-3 text-sm outline-none focus:ring-2 focus:ring-indigo-500" placeholder="請假日數（留空即自動計算）" />
                       <button onClick={handleQuickAddActivity} className="w-full rounded-xl bg-indigo-600 py-3 text-sm font-bold text-white shadow-md hover:bg-indigo-700">加入年假計畫</button>
                     </div>
@@ -1206,6 +1208,7 @@
                                             <span className="text-[10px] font-bold text-slate-400 w-8 shrink-0">開始</span>
                                             <DdmmyyyyInput 
                                               value={editForm.startDate} 
+                                              max={editForm.endDate || undefined}
                                               onChange={v => handleEditActivityChange('startDate', v)}
                                               className="w-full p-1 border border-slate-300 rounded-lg text-xs outline-none focus:ring-1 focus:ring-indigo-500"
                                             />
@@ -1214,6 +1217,7 @@
                                             <span className="text-[10px] font-bold text-slate-400 w-8 shrink-0">結束</span>
                                             <DdmmyyyyInput 
                                               value={editForm.endDate} 
+                                              min={editForm.startDate || undefined}
                                               onChange={v => handleEditActivityChange('endDate', v)}
                                               className="w-full p-1 border border-slate-300 rounded-lg text-xs outline-none focus:ring-1 focus:ring-indigo-500"
                                             />
@@ -1352,8 +1356,8 @@
                               <div className="space-y-2">
                                 <input value={editForm.name} onChange={e => handleEditActivityChange('name', e.target.value)} className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold outline-none" placeholder="計畫名稱" />
                                 <div className="grid grid-cols-2 gap-2">
-                                  <DdmmyyyyInput value={editForm.startDate} onChange={v => handleEditActivityChange('startDate', v)} className="w-full p-2 border border-slate-300 rounded-lg text-xs outline-none" />
-                                  <DdmmyyyyInput value={editForm.endDate} onChange={v => handleEditActivityChange('endDate', v)} className="w-full p-2 border border-slate-300 rounded-lg text-xs outline-none" />
+                                  <DdmmyyyyInput value={editForm.startDate} max={editForm.endDate || undefined} onChange={v => handleEditActivityChange('startDate', v)} className="w-full p-2 border border-slate-300 rounded-lg text-xs outline-none" />
+                                  <DdmmyyyyInput value={editForm.endDate} min={editForm.startDate || undefined} onChange={v => handleEditActivityChange('endDate', v)} className="w-full p-2 border border-slate-300 rounded-lg text-xs outline-none" />
                                 </div>
                                 <input type="number" step="0.5" value={editForm.requestedDays} onChange={e => handleEditActivityChange('requestedDays', e.target.value)} className="w-full p-2 border border-slate-300 rounded-lg text-sm font-bold outline-none" />
                                 <div className="flex gap-2"><button onClick={() => handleSaveActivityEdit(act.id)} className="flex-1 rounded-lg bg-emerald-600 text-white font-bold py-2">儲存</button><button onClick={() => setEditingActivityId(null)} className="flex-1 rounded-lg bg-slate-100 text-slate-600 font-bold py-2">取消</button></div>
@@ -1380,11 +1384,11 @@
                           </div>
                           <div className="w-full sm:w-[140px]">
                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">開始日期</label>
-                            <DdmmyyyyInput value={newActStartDate} onChange={setNewActStartDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm" />
+                            <DdmmyyyyInput value={newActStartDate} max={newActEndDate || undefined} onChange={setNewActStartDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm" />
                           </div>
                           <div className="w-full sm:w-[140px]">
                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">結束日期</label>
-                            <DdmmyyyyInput value={newActEndDate} onChange={setNewActEndDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm" />
+                            <DdmmyyyyInput value={newActEndDate} min={newActStartDate || undefined} onChange={setNewActEndDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-indigo-500/50 shadow-sm" />
                           </div>
                           <div className="w-full sm:w-[110px]">
                             <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">請假日數</label>
@@ -1490,11 +1494,11 @@
                         <div className="flex flex-wrap gap-4 items-end mb-6">
                             <div className="w-full sm:w-[140px]">
                               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">開始日期</label>
-                              <DdmmyyyyInput value={newEventStartDate} onChange={setNewEventStartDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" />
+                              <DdmmyyyyInput value={newEventStartDate} max={newEventEndDate || undefined} onChange={setNewEventStartDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" />
                             </div>
                             <div className="w-full sm:w-[140px]">
                               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">結束日期</label>
-                              <DdmmyyyyInput value={newEventEndDate} onChange={setNewEventEndDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" />
+                              <DdmmyyyyInput value={newEventEndDate} min={newEventStartDate || undefined} onChange={setNewEventEndDate} className="w-full p-2.5 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-orange-500/50 shadow-sm" />
                             </div>
                             <div className="w-full sm:w-[180px]">
                               <label className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5 block">事件名稱</label>
